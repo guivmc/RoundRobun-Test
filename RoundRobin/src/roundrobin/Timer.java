@@ -1,6 +1,7 @@
 package roundrobin;
 
 import Line.Line;
+import java.util.ArrayList;
 
 
 public class Timer 
@@ -8,6 +9,7 @@ public class Timer
     private int currentTime, quantum;
     private Process currentProcess;
     private Line waitingLine;
+    private ArrayList<Process> array = new ArrayList<>();
     
     public Timer(int quantum)
     {
@@ -15,6 +17,12 @@ public class Timer
     }
 
     public Timer(){}
+    
+    //void
+    public void insertProcess(Process p)
+    {
+        array.add(p);
+    }
     
     //Getters
     public int getCurrentTime() 

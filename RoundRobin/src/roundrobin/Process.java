@@ -5,7 +5,7 @@ import Line.Line;
 public class Process 
 {
     private String name;
-    private int duration, arrival;
+    private int duration = 0, arrival = 0;
     private Line io;
     
     public Process(String name, int duration, int arrival)
@@ -13,9 +13,13 @@ public class Process
         this.arrival = arrival;
         this.duration = duration;
         this.name = name;
+        io = new Line();
     }
     
-    public Process(){}
+    public Process()
+    {
+        io = new Line();
+    }
     
     //voids
     public void insertIO(int inOut)

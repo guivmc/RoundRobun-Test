@@ -17,8 +17,8 @@ public class MenuState extends State
     {
         if(engine.getKM().isEnter())
         {
-            State insert = new InsertState(this.monitor, this.engine);
-            State.setState(insert);
+           // State insert = new InsertState(this.monitor, this.engine);
+            State.setState(new InsertState(this.monitor, this.engine));
         }
     }
 
