@@ -11,22 +11,35 @@ public class DisplayDataState extends State
     private Timer timer;
     
     
-    public DisplayDataState(Screen monitor, Engine engine, Timer timer) 
+    public DisplayDataState(Screen monitor, Engine engine) 
     {
         super(monitor, engine);
-        this.timer = timer;
+        timer = new Timer();
     }
 
+    
     @Override
     public void update() 
     {
-       
+       if(engine.getKM().isEnter())
+       {
+           if(timer.isHeadNull()) timer.firstTime();
+           else
+           {
+               
+           }
+       }
     }
 
     @Override
     public void draw(Graphics g)
     {
-        
-    }
+        //System.out.println(timer.isHeadNull());
+    } 
     
+    //Getters
+    public Timer getTimer()
+    {
+        return timer;
+    }
 }

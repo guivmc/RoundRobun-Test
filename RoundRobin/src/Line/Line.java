@@ -1,6 +1,8 @@
 package Line;
 
-public class Line<inLine>
+import java.util.AbstractList;
+
+public class Line<inLine>  
 {
    private Node head, tail;
    
@@ -16,7 +18,7 @@ public class Line<inLine>
    }
    
     //voids
-    public void enqueue(int value)
+    public void enqueue(inLine value)
     {
         Node new_node = new Node(value);    
         
@@ -47,7 +49,7 @@ public class Line<inLine>
     }
     
     //Getters
-    public Node head()
+    public Node getHead()
     {
         return head;
     }

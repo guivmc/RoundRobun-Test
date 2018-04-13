@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -22,14 +23,16 @@ public class InsertState extends State implements ActionListener
     private JTextField text;
     private String JText = "";
     
-    private Timer timer;
-    private Process p = new Process();
+    private DisplayDataState dds;
+    private Process p = new Process(); 
     
     private int step = 0;
     
     public InsertState(Screen monitor, Engine engine) 
     {
         super(monitor, engine);
+        
+        dds = new DisplayDataState(monitor, engine);
         
         frame = new JFrame();
         frame.setVisible(true);
@@ -59,7 +62,7 @@ public class InsertState extends State implements ActionListener
         {
             case 0: // insert quantum
                 int aux = Integer.parseInt(JText);//myChar - '0';
-                timer = new Timer(aux);
+                dds.getTimer().setQuantum(aux);
                 step++;
                 break;
             case 1: //InsertProcess Name
@@ -77,12 +80,14 @@ public class InsertState extends State implements ActionListener
             case 4: //InsertProcess i/o
                 if(JText.equals("go"))
                 {
-                    State.setState(new DisplayDataState(this.monitor, this.engine, this.timer));
+                    dds.getTimer().insertProcess(p);
+                    frame.setVisible(false);
+                    State.setState(dds);
                     break;
                 }
                 if(JText.equals("new"))
                 {
-                    timer.insertProcess(p);
+                    dds.getTimer().insertProcess(p);
                     p = new Process();
                     step = 1;
                     break;
