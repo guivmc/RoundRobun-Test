@@ -23,13 +23,19 @@ public class DisplayDataState extends State
     public void update() 
     {
        if(engine.getKM().isEnter())
-       {
+       {        
            if(timer.isCurrentProcessNull()) timer.putFirstProcess();
            else
            {
-               timer.setCounter(timer.getCounter() + 1);
+               //timer.setCurrentTime(timer.getCurrentTime() + 1);
                timer.calculate();
            }
+//           else
+//           {
+//               timer.setCounter(timer.getCounter() + 1);
+//               timer.calculate();
+//           }
+           
        }
     }
 
@@ -39,9 +45,9 @@ public class DisplayDataState extends State
         g.setColor(Color.yellow);
         g.setFont(font);
         //System.out.println(timer.isHeadNull());
-        g.drawString(timer.getTimeOutput(),  monitor.getWidth()/2,  monitor.getHeight()/2);
-        g.drawString(timer.getLineOutPut(),  monitor.getWidth()/2,  monitor.getHeight()/2 + 40);
-        g.drawString(timer.getCPUOutout(),  monitor.getWidth()/2,  monitor.getHeight()/2 + 80);
+        g.drawString(timer.getTimeOutput(),  monitor.getWidth()/2 - 200,  monitor.getHeight()/2);
+        g.drawString(timer.getLineOutPut(),  monitor.getWidth()/2 - 200,  monitor.getHeight()/2 + 40);
+        g.drawString(timer.getCPUOutout(),  monitor.getWidth()/2 - 200,  monitor.getHeight()/2 + 80);
     } 
     
     //Getters

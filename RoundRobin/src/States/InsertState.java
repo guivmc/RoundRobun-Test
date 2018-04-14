@@ -95,6 +95,7 @@ public class InsertState extends State implements ActionListener
                 p.insertIO(Integer.parseInt(JText));
                 break;
         }
+       text.setText("");
     }
 
     @Override
