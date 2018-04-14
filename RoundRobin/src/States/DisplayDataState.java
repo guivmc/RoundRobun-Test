@@ -2,6 +2,7 @@ package States;
 
 import Control.Engine;
 import Screen.Screen;
+import java.awt.Color;
 import java.awt.Graphics;
 import roundrobin.Timer;
 
@@ -23,18 +24,24 @@ public class DisplayDataState extends State
     {
        if(engine.getKM().isEnter())
        {
-           if(timer.isHeadNull()) timer.firstTime();
+           if(timer.isCurrentProcessNull()) timer.putFirstProcess();
            else
            {
-               
+               timer.setCounter(timer.getCounter() + 1);
+               timer.calculate();
            }
        }
     }
 
     @Override
     public void draw(Graphics g)
-    {
+    { 
+        g.setColor(Color.yellow);
+        g.setFont(font);
         //System.out.println(timer.isHeadNull());
+        g.drawString(timer.getTimeOutput(),  monitor.getWidth()/2,  monitor.getHeight()/2);
+        g.drawString(timer.getLineOutPut(),  monitor.getWidth()/2,  monitor.getHeight()/2 + 40);
+        g.drawString(timer.getCPUOutout(),  monitor.getWidth()/2,  monitor.getHeight()/2 + 80);
     } 
     
     //Getters

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public class Timer 
 {
-    private int currentTime = 0, quantum;
-    private Process currentProcess;
-    private Line<Process> waitingLine = new Line();
+    private int currentTime = 0, quantum, counter = 0;
+    private Process currentProcess = null;
+    private Line waitingLine = new Line();
     private ArrayList<Process> array = new ArrayList<>();
-    private String out = "";
+    private String time = "", line = "", cpu = "";
     private ArrayList<String> names = new ArrayList<>();
     
     public Timer(int quantum)
@@ -26,34 +26,101 @@ public class Timer
         array.add(p);
     }
     
-    public void firstTime()
+    public void putFirstProcess()
     {
         if(array.isEmpty()) return;   
         //GetProcess First
-        if(waitingLine.getHead() == null)
+        if(currentProcess == null)
         {
             for (int i = 0; i < array.size(); i++) 
             {
                 Process p = array.get(i);
                 if(p.getArrival() == currentTime)
                 {
-                    waitingLine.enqueue(p);
-                    names.add(p.getName());
-                    out = "Tempo: " + currentTime + " chegada de " + p.getName() +
-                    "\nFila: " + getNames() + "\n" +
-                    "CPU: " + p.getName() + "(" + p.getDuration() + ")";           
+                    //waitingLine.enqueue(p);
+                    currentProcess = p;
+                    time = "Tempo: " + currentTime + " chegada de " + p.getName();
+                    line = "Fila: ";
+                    cpu = "CPU: " + p.getName() + "(" + p.getDuration() + ")";           
                     array.remove(i);
                     break;
                 }
+                time = "Tempo: " + currentTime;
+                line=  "\nFila: ";
+                cpu = "CPU: ";        
                 currentTime++;
             }  
         }
     }
     
-    //Bools
-    public boolean isHeadNull()
+    public void checkForArraival()
     {
-        return (waitingLine.getHead() == null);
+         for (int i = 0; i < array.size(); i++) 
+            {
+                Process p = array.get(i);
+                if(p.getArrival() == currentTime)
+                {
+                    time +=  " chegada de processo " + p.getName();
+                    names.add(names.size(), p.getName());
+                    waitingLine.enqueue(p);
+                    array.remove(i);
+                    break;
+                }
+            }  
+    }
+    
+    public void calculate()
+    {
+        if(counter < quantum)
+        {  
+            time = "Tempo: " + currentTime;
+            if(!currentProcess.getIO().isEmpty())
+            {
+                if((int) (currentProcess.getIO().getHead().getValue()) == currentProcess.getTotalProcessed())
+                {
+                    currentProcess.getIO().dequeue();
+                    waitingLine.dequeue();
+                    waitingLine.enqueue(currentProcess);
+                    if(waitingLine.isEmpty())
+                    {
+                        currentProcess = null;
+                    }
+                    else
+                    {
+                        time += " operacao de I/O " + currentProcess.getName();
+                        names.add(names.size(), currentProcess.getName());
+                        currentProcess = (Process) waitingLine.getHead().getValue();
+                    }                
+                }
+            }
+            
+            checkForArraival();
+            line = "Fila: " + getNames();
+            currentProcess.setDuration(currentProcess.getDuration() - 1);
+            if(currentProcess.getDuration() == 0)
+            {
+                if(waitingLine.isEmpty())
+                    {
+                        currentProcess = null;
+                    }
+                    else
+                    {
+                        time += " operacao de I/O " + currentProcess.getName();
+                        names.add(names.size(), currentProcess.getName());
+                        currentProcess = (Process) waitingLine.getHead().getValue();
+                    }          
+            }
+            if(!isCurrentProcessNull())cpu = "CPU: " + currentProcess.getName() + "(" + currentProcess.getDuration() + ")";
+            else cpu =  "CPU: ";
+            currentTime++;
+        }
+        else counter = 0;
+    }
+    
+    //Bools
+    public boolean isCurrentProcessNull()
+    {
+        return (currentProcess == null);
     }
     
     //Strings  
@@ -84,11 +151,25 @@ public class Timer
         return currentProcess;
     }
     
-    public String getOutput()
+    public String getTimeOutput()
     {
-        return out;
+        return time;
     }
     
+    public String getLineOutPut()
+    {
+        return line;
+    }
+    
+    public String getCPUOutout()
+    {
+        return cpu;
+    }
+
+    public int getCounter() 
+    {
+        return counter;
+    } 
     //Setters
     public void setCurrentTime(int currentTime)
     {
@@ -104,5 +185,9 @@ public class Timer
     {
         this.currentProcess = currentProcess;
     }
-    
+
+    public void setCounter(int counter) 
+    {
+        this.counter = counter;
+    }   
 }

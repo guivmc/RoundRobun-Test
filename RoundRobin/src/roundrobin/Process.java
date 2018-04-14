@@ -5,7 +5,7 @@ import Line.Line;
 public class Process 
 {
     private String name;
-    private int duration = 0, arrival = 0;
+    private int duration = 0, arrival = 0, totalProcessed = 0;
     private Line io;
     
     public Process(String name, int duration, int arrival)
@@ -43,6 +43,16 @@ public class Process
         return arrival;
     }
     
+    public Line getIO()
+    {
+        return io;
+    }
+
+    public int getTotalProcessed() 
+    {
+        return totalProcessed;
+    }   
+    
     //Setters
     public void setName(String name) 
     {
@@ -58,4 +68,9 @@ public class Process
     {
         this.arrival = arrival;
     } 
+
+    public void setTotalProcessed(int totalProcessed)
+    {
+        this.totalProcessed = totalProcessed;
+    }  
 }
