@@ -73,6 +73,8 @@ public class Timer
                         if(waitingLine.getHead() != null)
                         {
                             time += " operação de I/O de " + currentProcess.getName();
+                            names.enqueue(currentProcess.getName());
+                            names.dequeue();
                             waitingLine.enqueue(currentProcess);
                             currentProcess.getIO().dequeue();
                             currentProcess = (Process) waitingLine.dequeue();
@@ -86,8 +88,12 @@ public class Timer
                 if(currentProcess.getDuration() - 1 == 0)
                 {
                     time += " fim do processo " + currentProcess.getName();
-                    if(waitingLine.getHead() != null) currentProcess = (Process) waitingLine.dequeue();
-                    else time = "Fim";
+                    if(waitingLine.getHead() != null)
+                    {
+                        currentProcess = (Process) waitingLine.dequeue();
+                        names.dequeue();
+                    }
+                    else time = "Tempo: Fim da simulação";
                     counter = 0;
                     break loop;
                 }
@@ -99,8 +105,12 @@ public class Timer
             if(currentProcess.getDuration() - 1 == 0)
             {
                 time += " fim do processo " + currentProcess.getName();
-                if(waitingLine.getHead() != null) currentProcess = (Process) waitingLine.dequeue();
-                else time = "Fim";
+                if(waitingLine.getHead() != null) 
+                {
+                    currentProcess = (Process) waitingLine.dequeue();
+                    names.dequeue();
+                }
+                else time = "Tempo: Fim da simulação";
             }
             counter = 0;
         }
