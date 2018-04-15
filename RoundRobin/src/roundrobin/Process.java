@@ -27,6 +27,12 @@ public class Process
         io.enqueue(inOut);
     }
     
+    public void compute()
+    {
+        if(duration > 0)duration--;
+        totalProcessed++;
+    }
+    
     //Getters
     public String getName() 
     {
