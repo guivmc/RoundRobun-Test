@@ -26,16 +26,9 @@ public class DisplayDataState extends State
        {        
            if(timer.isCurrentProcessNull()) timer.putFirstProcess();
            else
-           {
-               //timer.setCurrentTime(timer.getCurrentTime() + 1);
+           {   
                timer.calculate();
-           }
-//           else
-//           {
-//               timer.setCounter(timer.getCounter() + 1);
-//               timer.calculate();
-//           }
-           
+           }             
        }
     }
 

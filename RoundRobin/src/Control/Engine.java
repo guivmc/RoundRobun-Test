@@ -55,7 +55,7 @@ public class Engine implements Runnable
     public void run()
     {
        //FPS
-       int fps = 10;
+       int fps = 30;
        double timePerUpdate = 1000000000 / fps;
        double delta = 0;
        long now;

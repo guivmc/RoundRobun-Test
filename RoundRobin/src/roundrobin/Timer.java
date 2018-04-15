@@ -49,6 +49,7 @@ public class Timer
             {
                 time += " chegada de processo " + p.getName();
                 names.enqueue(p.getName());
+                chart.dequeue();
                 waitingLine.enqueue(p);
             }
             aux = aux.getNext();
@@ -76,34 +77,35 @@ public class Timer
                             currentProcess.getIO().dequeue();
                             currentProcess = (Process) waitingLine.dequeue();
                             counter = 0;
+                            break loop;
                         }   
                     }
                 }
 
 
-                if(currentProcess.getDuration() == 0)
+                if(currentProcess.getDuration() - 1 == 0)
                 {
                     time += " fim do processo " + currentProcess.getName();
                     if(waitingLine.getHead() != null) currentProcess = (Process) waitingLine.dequeue();
+                    else time = "Fim";
                     counter = 0;
+                    break loop;
                 }
                 currentProcess.compute();
-                break loop;
             }
         }
         else 
         {
-            if(waitingLine.getHead() != null)
+            if(currentProcess.getDuration() - 1 == 0)
             {
-                if(currentProcess.getDuration() != 0) waitingLine.enqueue(currentProcess);
-                else time += " fim do processo " + currentProcess.getName();
-                currentProcess = (Process) waitingLine.dequeue();
-                time += " troca de processo para " + currentProcess.getName();
-                
+                time += " fim do processo " + currentProcess.getName();
+                if(waitingLine.getHead() != null) currentProcess = (Process) waitingLine.dequeue();
+                else time = "Fim";
             }
             counter = 0;
         }
         cpu = "CPU: " + currentProcess.getName() + "(" + currentProcess.getDuration() + ")"; 
+        line = "Fila: " + getNames();
         currentTime++;
     }
     
@@ -116,7 +118,7 @@ public class Timer
     //Strings  
     public String getNames()
     {
-        Node aux = names.getHead(); 
+        Node aux = names.getHead().getNext(); 
         String out = " ";
         while(aux != null)
         {
