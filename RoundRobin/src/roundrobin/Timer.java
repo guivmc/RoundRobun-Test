@@ -2,7 +2,6 @@ package roundrobin;
 
 import Line.Line;
 import Line.Node;
-import java.util.ArrayList;
 
 
 public class Timer 
@@ -22,9 +21,11 @@ public class Timer
     //void
     public void insertProcess(Process p)
     {
+        //inserir na tabela
         chart.enqueue(p);
     }
     
+    //Pega o primeiro processo que chega
     public void putFirstProcess()
     {
         if(chart.isEmpty()) return;
@@ -39,6 +40,7 @@ public class Timer
         cpu += currentProcess.getName() + "(" + currentProcess.getDuration() + ")"; 
     }
     
+    //Checa se outro processo chegou
     public void checkForArraival()
     {
         Node aux = chart.getHead();
@@ -56,6 +58,7 @@ public class Timer
         } 
     }
     
+    //Executa processo
     public void calculate()
     {
         time = "Tempo: " + currentTime;
@@ -65,13 +68,14 @@ public class Timer
             {
                 counter++;
                 checkForArraival();
-
+                
+                //checa se o processo tem I/O
                 if (currentProcess.getIO().getHead() != null)
                 {
                     if((int) (currentProcess.getIO().getHead().getValue()) - 1 == currentProcess.getTotalProcessed())
                     {                    
                         if(waitingLine.getHead() != null)
-                        {
+                        {   // Se sim troca de processo se possivel
                             time += " operação de I/O de " + currentProcess.getName();
                             names.enqueue(currentProcess.getName());
                             names.dequeue();
@@ -84,15 +88,15 @@ public class Timer
                     }
                 }
 
-
+                //Checa se o processo acabou
                 if(currentProcess.getDuration() - 1 == 0)
-                {
+                {   
                     time += " fim do processo " + currentProcess.getName();
                     if(waitingLine.getHead() != null)
-                    {
+                    {   //Checa se ha outros processos na fila de espera
                         currentProcess = (Process) waitingLine.dequeue();
                         names.dequeue();
-                    }
+                    } //Caso nao, entao fim
                     else time = "Tempo: Fim da simulação";
                     counter = 0;
                     break loop;
@@ -101,15 +105,15 @@ public class Timer
             }
         }
         else 
-        {
+        {   //Checa se o processo acabou
             if(currentProcess.getDuration() - 1 == 0)
             {
                 time += " fim do processo " + currentProcess.getName();
                 if(waitingLine.getHead() != null) 
-                {
+                { //Checa se ha outros processos na fila de espera
                     currentProcess = (Process) waitingLine.dequeue();
                     names.dequeue();
-                }
+                } //Caso nao, entao fim
                 else time = "Tempo: Fim da simulação";
             }
             counter = 0;
@@ -127,7 +131,7 @@ public class Timer
     
     //Strings  
     public String getNames()
-    {
+    {   //Pega os nomes dos processos que estao na fila de espera
         Node aux = names.getHead().getNext(); 
         String out = " ";
         while(aux != null)

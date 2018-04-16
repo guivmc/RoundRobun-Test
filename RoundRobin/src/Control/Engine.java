@@ -3,7 +3,6 @@ package Control;
 import KeyManager.KeyManager;
 import Screen.Screen;
 import States.*;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
